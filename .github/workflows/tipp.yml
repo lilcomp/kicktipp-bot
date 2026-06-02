@@ -3,6 +3,11 @@ on:
   schedule:
     - cron: '0 */3 * * *'   # alle 3 Stunden
   workflow_dispatch:          # manueller Start zum Testen
+    inputs:
+      hours:
+        description: 'KICKTIPP_HOURS_UNTIL_GAME (nur fuer diesen Lauf, Default 24)'
+        required: false
+        default: '24'
 jobs:
   tip:
     runs-on: ubuntu-latest
@@ -17,6 +22,6 @@ jobs:
           KICKTIPP_EMAIL: ${{ secrets.KICKTIPP_EMAIL }}
           KICKTIPP_PASSWORD: ${{ secrets.KICKTIPP_PASSWORD }}
           KICKTIPP_NAME_OF_COMPETITION: ${{ secrets.KICKTIPP_NAME_OF_COMPETITION }}
-          KICKTIPP_HOURS_UNTIL_GAME: '24'
+          KICKTIPP_HOURS_UNTIL_GAME: ${{ inputs.hours || '24' }}
           KICKTIPP_RUN_EVERY_X_MINUTES: '0'
           OVERWRITE_TIPS: 'false'
