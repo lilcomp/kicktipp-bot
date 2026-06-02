@@ -1,0 +1,22 @@
+name: kicktipp
+on:
+  schedule:
+    - cron: '0 */3 * * *'   # alle 3 Stunden
+  workflow_dispatch:          # manueller Start zum Testen
+jobs:
+  tip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: python run.py --headless
+        env:
+          KICKTIPP_EMAIL: ${{ secrets.KICKTIPP_EMAIL }}
+          KICKTIPP_PASSWORD: ${{ secrets.KICKTIPP_PASSWORD }}
+          KICKTIPP_NAME_OF_COMPETITION: ${{ secrets.KICKTIPP_NAME_OF_COMPETITION }}
+          KICKTIPP_HOURS_UNTIL_GAME: '24'
+          KICKTIPP_RUN_EVERY_X_MINUTES: '0'
+          OVERWRITE_TIPS: 'false'
